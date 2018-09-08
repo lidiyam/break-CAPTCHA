@@ -9,7 +9,7 @@ import pickle
 
 MODEL_FILENAME = "captcha_model.hdf5"
 MODEL_LABELS_FILENAME = "model_labels.dat"
-CAPTCHA_IMAGE_FOLDER = "generated_captcha_images"
+CAPTCHA_IMAGE_FOLDER = "data/generated_captcha_images"
 
 
 # Load up the model labels (so we can translate model predictions to actual letters)
@@ -108,5 +108,5 @@ for image_file in captcha_image_files:
     print("CAPTCHA text is: {}".format(captcha_text))
 
     # Show the annotated image
-    cv2.imshow("Output", output)
-    cv2.waitKey()
+    #cv2.imshow("Output", output)
+    #cv2.waitKey()
