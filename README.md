@@ -1,16 +1,21 @@
 # break-captcha
 
-Breaking simple 4-letter captcha with opencv and Keras.
+Solving simple 4-letter captcha with OpenCV and Keras.
 
 ### Intructions
 
-From the main repo:
+Clone the repo & build a container:
 ```
 docker build .
 
+docker run -it <container_id> bash
+```
+
+From inside the container:
+```
 python3 train_model.py
 
-python3 break_captcha.py
+python3 break_captcha.py --img <PATH_TO_THE_IMAGE_FILE>
 ```
 
 ###

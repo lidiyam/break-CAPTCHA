@@ -1,3 +1,4 @@
+import argparse
 import cv2
 import pickle
 import os.path
@@ -8,10 +9,10 @@ from sklearn.model_selection import train_test_split
 from keras.models import Sequential
 from keras.layers.convolutional import Conv2D, MaxPooling2D
 from keras.layers.core import Flatten, Dense
-from helpers import resize_to_fit
+from utils import resize_to_fit
 
 
-def saveModelLabels(LETTER_IMAGES_FOLDER, MODEL_LABELS_FILENAME):
+def get_model_labels(LETTER_IMAGES_FOLDER):
     # initialize the data and labels
     data = []
     labels = []
@@ -40,6 +41,10 @@ def saveModelLabels(LETTER_IMAGES_FOLDER, MODEL_LABELS_FILENAME):
     data = np.array(data, dtype="float") / 255.0
     labels = np.array(labels)
 
+    return (data, labels)
+    
+
+def build_model(data, labels, MODEL_LABELS_FILENAME, batch_size, epochs):
     # Split the training data into separate train and test sets
     (X_train, X_test, Y_train, Y_test) = train_test_split(data, labels, test_size=0.25, random_state=0)
 
@@ -53,8 +58,6 @@ def saveModelLabels(LETTER_IMAGES_FOLDER, MODEL_LABELS_FILENAME):
     with open(MODEL_LABELS_FILENAME, "wb") as f:
         pickle.dump(lb, f)
 
-
-def build_model(batch_size, epochs):
     model = Sequential()
 
     # First convolutional layer with max pooling
@@ -89,11 +92,14 @@ if __name__ == '__main__':
     LETTER_IMAGES_FOLDER = "data/extracted_letter_images"
     MODEL_FILENAME = "captcha_model.hdf5"
     MODEL_LABELS_FILENAME = "model_labels.dat"
-    batch_size = 32
-    epochs = 5
 
-    saveModelLabels(LETTER_IMAGES_FOLDER, MODEL_LABELS_FILENAME)
-    model = build_model(batch_size, epochs)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--epochs', type=int, default=5)
+    args = parser.parse_args()
 
-    saveModel(model)
+    data, labels = get_model_labels(LETTER_IMAGES_FOLDER)
+    model = build_model(data, labels, MODEL_LABELS_FILENAME, args.batch_size, args.epochs)
+
+    saveModel(model, MODEL_FILENAME)
 

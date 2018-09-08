@@ -1,6 +1,6 @@
 numpy
-imutils
 sklearn
+imutils
 tensorflow
 keras
 

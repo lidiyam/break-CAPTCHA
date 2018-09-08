@@ -36,5 +36,4 @@ def resize_to_fit(image, width, height):
         cv2.BORDER_REPLICATE)
     image = cv2.resize(image, (width, height))
 
-    # return the pre-processed image
     return image
